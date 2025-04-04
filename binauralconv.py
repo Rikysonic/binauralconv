@@ -39,7 +39,7 @@ verbose = False
 force = False
 ffmpeg = which("ffmpeg")
 splitflac = which("split2flac")
-sofafile = join(scriptdir, "ClubFritz11.sofa")
+sofafile = "ClubFritz11.sofa"
 fileext = ".flac"
 concatfile = "concat.flac"
 convfile = "concat_b.flac"
@@ -114,9 +114,9 @@ def isint(x):
 
 def filtergraph(volume=None):
     if sofalizer:
-        speakers51 = "speakers=FL 30 0|FR 330 0|FC 0 0|BL 120 0|BR 240 0|BC 180 0"
+        speakers51 = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BC 180 0|SL 120 0|SR 240 0"
         speakers40 = "speakers=FL 45 0|FR 315 0|FC 0 0|BL 135 0|BR 225 0|BC 180 0"
-        speakers71 = "speakers=FL 30 0|FR 330 0|FC 0 0|BL 135 0|BR 225 0|BC 180 0|SL 90 0|SR 270 0"
+        speakers71 = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 135 0|BR 225 0|BC 180 0|SL 90 0|SR 270 0"
         if layout == "4.0":
             speakers = speakers40
         elif layout == "7.1":
@@ -203,11 +203,10 @@ def filtergraph(volume=None):
                 "{pan}," +
                 "aresample=96000:resampler={resampler}:precision=28," +
                 "sofalizer=sofa={sofa}:gain={sofagain}:{speakers}," +
-                "firequalizer=gain_entry='{subeq}{maineq}'," +
-                "aresample={outsamplerate}:resampler={resampler}:precision=28").format(
+                "firequalizer=gain_entry='{subeq}{maineq}'").format(
             pan=pan, sofa=sofafile,
             sofagain=sofagain, speakers=speakers, subeq=subeq,
-            maineq=maineq, resampler=resampler, outsamplerate=outsamplerate)
+            maineq=maineq, resampler=resampler)
     else:
         graph = (
                 "{wavs}," +
@@ -759,6 +758,7 @@ Individual steps of the process can be disabled or tuned using these options:
     log("SOFA gain: %.2f" % sofagain)
     log("LFE multiplier: %.2f" % lfemultiplier)
     log("Sofalizer? %s" % ("yes" if sofalizer else "no"))
+    log("SOFA profile? %s" % (sofafile if sofalizer else "none"))
     log("Resampler: %s" % resampler)
 
     if domakecue:
