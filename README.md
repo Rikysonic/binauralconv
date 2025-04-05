@@ -36,3 +36,4 @@ Convert all FLAC files in `~/Documents/suroundstuff`, placing work files in `/tm
 
 binauralconv.py is provided under the MIT license.
 ClubFritz11.sofa ([source](http://www.sofaconventions.org/mediawiki/index.php/Main_Page)) by Acoustics Research Institute, Austrian Academy of Sciences is licenced under [Creative Commons Attribution-ShareAlike 3.0 Unported License](http://creativecommons.org/licenses/by-sa/3.0/).
+D2_96K_24bit_512tap_FIR_SOFA.sofa ([source](https://www.york.ac.uk/sadie-project/database.html)) by The University of York is licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0)

@@ -39,7 +39,7 @@ verbose = False
 force = False
 ffmpeg = which("ffmpeg")
 splitflac = which("split2flac")
-sofafile = "ClubFritz11.sofa"
+sofafile = "D2_96K_24bit_512tap_FIR_SOFA.sofa"
 fileext = ".flac"
 concatfile = "concat.flac"
 convfile = "concat_b.flac"
@@ -202,8 +202,8 @@ def filtergraph(volume=None):
         graph = (
                 "{pan}," +
                 "aresample=96000:resampler={resampler}:precision=28," +
-                "sofalizer=sofa={sofa}:gain={sofagain}:{speakers}," +
-                "firequalizer=gain_entry='{subeq}{maineq}'").format(
+                "sofalizer=sofa={sofa}:gain={sofagain}:{speakers}").format(
+                # "firequalizer=gain_entry='{subeq}{maineq}'").format(
             pan=pan, sofa=sofafile,
             sofagain=sofagain, speakers=speakers, subeq=subeq,
             maineq=maineq, resampler=resampler)
