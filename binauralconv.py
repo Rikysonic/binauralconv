@@ -117,10 +117,20 @@ def filtergraph(volume=None):
         speakers51  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BC 180 0|SL 120 0|SR 240 0"
         speakers40  = "speakers=FL 45 0|FR 315 0|FC 0 0|BL 135 0|BR 225 0|BC 180 0"
         speakers71  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 135 0|BR 225 0|BC 180 0|SL 90 0|SR 270 0"
+        speakers714 = (
+                "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|SL 90 0|SR 270 0|BL 135 0|BR 225 0|"
+                "TFL 30 45|TFR 330 45|TBL 135 45|TBR 225 45")
+        speakers916 = (
+                "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|SL 90 0|SR 270 0|BL 135 0|BR 225 0|"
+                "WL 60 0|WR 300 0|TFL 30 45|TFR 330 45|TFC 90 45|TBC 270 45|TBL 135 45|TBR 225 45")
         if layout == "4.0":
             speakers = speakers40
         elif layout == "7.1":
             speakers = speakers71
+        elif layout == "7.1.4":
+            speakers = speakers714
+        elif layout == "9.1.6":
+            speakers = speakers916
         else:
             speakers = speakers51
     else:
@@ -179,6 +189,16 @@ def filtergraph(volume=None):
                     "[orig] pan=FL+FR+FC+BL+BR+SL+SR|FL=FL|FR=FR|FC=FC|BL=BL|BR=BR|SL=SL|SR=SR [orig2];"
                     "[orig2][BC][LFE2] amerge=inputs=3,pan=FL+FR+FC+LFE+BL+BR+BC+SL+SR|"
                     "FL=FL|FR=FR|FC=FC|LFE={lfemultiplier}*LFE|BL=BL|BR=BR|BC=BC|SL=SL|SR=SR").format(lfemultiplier=lfemultiplier)
+        elif layout == "7.1.4":
+            pan = (
+                    "pan=FL+FR+FC+LFE+SL+SR+BL+BR+TFL+TFR+TBL+TBR|"
+                    "FL=c0|FR=c1|FC=c2|LFE={lfemultiplier}*c3|SL=c4|SR=c5|BL=c6|BR=c7|"
+                    "TFL=c8|TFR=c9|TBL=c10|TBR=c11").format(lfemultiplier=lfemultiplier)
+        elif layout == "9.1.6":
+            pan = (
+                    "pan=FL+FR+FC+LFE+SL+SR+BL+BR+WL+WR+TFL+TFR+TFC+TBC+TBL+TBR|"
+                    "FL=c0|FR=c1|FC=c2|LFE={lfemultiplier}*c3|SL=c4|SR=c5|BL=c6|BR=c7|WL=c8|"
+                    "WR=c9|TFL=c10|TFR=c11|TFC=c12|TBC=c13|TBL=c14|TBR=c15").format(lfemultiplier=lfemultiplier)
         else:
             pan = (
                     "asplit=2 [orig][sub];"
@@ -292,7 +312,7 @@ def concat():
     if isfile(concatfile) and not force:
         log("Concatenated file exists, skipping.")
         return
-    args = [ffmpeg, "-f", "concat", "-safe", "0", "-i", listfile, "-c:a", "flac", concatfile]
+    args = [ffmpeg, "-f", "concat", "-safe", "0", "-i", listfile, "-c:a", "copy", concatfile]
     if force:
         args.insert(-1, "-y")
     process(args)
@@ -683,6 +703,10 @@ Individual steps of the process can be disabled or tuned using these options:
             layout = "4.0"
         elif argname in ("--7.1", "-8"):
             layout = "7.1"
+        elif argname in ("--7.1.4", "-12"):
+            layout = "7.1.4"
+        elif argname in ("--9.1.6", "-16"):
+            layout = "9.1.6"
         elif argname in ("--generate-lfe", "-generate-fle"):
             generatelfe = True
         elif argname in ("--lfe-multiplier", "-lfe-multiplier"):
