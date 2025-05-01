@@ -114,9 +114,9 @@ def isint(x):
 
 def filtergraph(volume=None):
     if sofalizer:
-        speakers51 = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BC 180 0|SL 120 0|SR 240 0"
-        speakers40 = "speakers=FL 45 0|FR 315 0|FC 0 0|BL 135 0|BR 225 0|BC 180 0"
-        speakers71 = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 135 0|BR 225 0|BC 180 0|SL 90 0|SR 270 0"
+        speakers51  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BC 180 0|SL 120 0|SR 240 0"
+        speakers40  = "speakers=FL 45 0|FR 315 0|FC 0 0|BL 135 0|BR 225 0|BC 180 0"
+        speakers71  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 135 0|BR 225 0|BC 180 0|SL 90 0|SR 270 0"
         if layout == "4.0":
             speakers = speakers40
         elif layout == "7.1":
@@ -125,18 +125,21 @@ def filtergraph(volume=None):
             speakers = speakers51
     else:
         if layout == "4.0":
-            wavs = "amovie=wavs/fl_q.wav[h_fl],amovie=wavs/fr_q.wav[h_fr]," + \
-                   "amovie=wavs/fc.wav[h_fc],amovie=wavs/bc.wav,asplit=2[h_bc][h_lfe]," + \
-                   "amovie=wavs/bl_q.wav[h_bl],amovie=wavs/br_q.wav[h_br]"
+            wavs = (
+                    "amovie=wavs/fl_q.wav[h_fl],amovie=wavs/fr_q.wav[h_fr],"
+                    "amovie=wavs/fc.wav[h_fc],amovie=wavs/bc.wav,asplit=2[h_bc][h_lfe],"
+                    "amovie=wavs/bl_q.wav[h_bl],amovie=wavs/br_q.wav[h_br]")
         elif layout == "7.1":
-            wavs = "amovie=wavs/fl.wav[h_fl],amovie=wavs/fr.wav[h_fr]," + \
-                   "amovie=wavs/fc.wav[h_fc],amovie=wavs/bc.wav,asplit=2[h_bc][h_lfe]," + \
-                   "amovie=wavs/bl_8.wav[h_bl],amovie=wavs/br_8.wav[h_br]," + \
-                   "amovie=wavs/sl.wav[h_sl],amovie=wavs/sr.wav[h_sr]"
+            wavs = (
+                    "amovie=wavs/fl.wav[h_fl],amovie=wavs/fr.wav[h_fr],"
+                    "amovie=wavs/fc.wav[h_fc],amovie=wavs/bc.wav,asplit=2[h_bc][h_lfe],"
+                    "amovie=wavs/bl_8.wav[h_bl],amovie=wavs/br_8.wav[h_br],"
+                    "amovie=wavs/sl.wav[h_sl],amovie=wavs/sr.wav[h_sr]")
         else:
-            wavs = "amovie=wavs/fl.wav[h_fl],amovie=wavs/fr.wav[h_fr]," + \
-                   "amovie=wavs/fc.wav[h_fc],amovie=wavs/bc.wav,asplit=2[h_bc][h_lfe]," + \
-                   "amovie=wavs/bl.wav[h_bl],amovie=wavs/br.wav[h_br]"
+            wavs = (
+                    "amovie=wavs/fl.wav[h_fl],amovie=wavs/fr.wav[h_fr],"
+                    "amovie=wavs/fc.wav[h_fc],amovie=wavs/bc.wav,asplit=2[h_bc][h_lfe],"
+                    "amovie=wavs/bl.wav[h_bl],amovie=wavs/br.wav[h_br]")
 
         if layout == "7.1":
             speakers = "FL|FR|FC|LFE|BL|BR|BC|SL|SR"
@@ -146,45 +149,46 @@ def filtergraph(volume=None):
             headphone_map = "[h_fl][h_fr][h_fc][h_lfe][h_bc][h_bl][h_br]"
 
     if generatelfe:
-        pan = "asplit=2 [orig][sub];" + \
-              "[sub] pan=mono|FC<FL+FR+FC+LFE+BL+BR+BC+SL+SR," + \
-              "firequalizer=gain='if(lt(f,150), 0, -INF)',pan=LFE|LFE=c0 [LFE];"
+        pan = (
+                "asplit=2 [orig][sub];"
+                "[sub] pan=mono|FC<FL+FR+FC+LFE+BL+BR+BC+SL+SR,"
+                "firequalizer=gain='if(lt(f,150), 0, -INF)',pan=LFE|LFE=c0 [LFE];")
 
         if layout == "7.1":
             pan += (
-                    "[orig] pan=FL+FR+FC+BL+BR+BC+SL+SR|FL=FL|FR=FR|FC=FC|BL=BL|BR=BR|BC=LFE|SL=SL|SR=SR [orig2];" +
-                    "[orig2][LFE] amerge,pan=FL+FR+FC+LFE+BL+BR+BC+SL+SR|" +
+                    "[orig] pan=FL+FR+FC+BL+BR+BC+SL+SR|FL=FL|FR=FR|FC=FC|BL=BL|BR=BR|BC=LFE|SL=SL|SR=SR [orig2];"
+                    "[orig2][LFE] amerge,pan=FL+FR+FC+LFE+BL+BR+BC+SL+SR|"
                     "FL=FL|FR=FR|FC=FC|LFE={lfemultiplier}*LFE|BL=BL|BR=BR|BC=BC|SL=SL|SR=SR").format(
                 lfemultiplier=(0.7 * lfemultiplier))
         else:
             pan += (
-                    "[orig] pan=FL+FR+FC+BC+SL+SR|FL=FL|FR=FR|FC=FC|BC=LFE|SL<SL+BL|SR<SR+BR [orig2];" +
-                    "[orig2][LFE] amerge,pan=6.1|" +
+                    "[orig] pan=FL+FR+FC+BC+SL+SR|FL=FL|FR=FR|FC=FC|BC=LFE|SL<SL+BL|SR<SR+BR [orig2];"
+                    "[orig2][LFE] amerge,pan=6.1|"
                     "FL=FL|FR=FR|FC=FC|LFE={lfemultiplier}*LFE|BC=BC|SL=SL|SR=SR").format(
                 lfemultiplier=(0.7 * lfemultiplier))
 
     else:
         if layout == "7.1":
             pan = (
-                    "asplit=2 [orig][sub];" +
-                    "[sub] channelsplit=channel_layout=7.1 [FL][FR][FC][LFE][BL][BR][SL][SR];" +
-                    "[FL][FR][FC][BL][BR][SL][SR] amerge=inputs=7,anullsink;" +
-                    "[LFE] pan=BC+LFE|BC=c0|LFE=c0,channelsplit=channel_layout=BC+LFE [BC][LFE2];" +
-                    "[LFE2] firequalizer=gain='if(lt(f,150), 0, -INF)',pan=LFE|LFE=c0 [LFE2];" +
-                    "[BC] firequalizer=gain='if(gt(f,150), 0, -INF)',pan=BC|BC=c0 [BC];" +
-                    "[orig] pan=FL+FR+FC+BL+BR+SL+SR|FL=FL|FR=FR|FC=FC|BL=BL|BR=BR|SL=SL|SR=SR [orig2];" +
-                    "[orig2][BC][LFE2] amerge=inputs=3,pan=FL+FR+FC+LFE+BL+BR+BC+SL+SR|" +
+                    "asplit=2 [orig][sub];"
+                    "[sub] channelsplit=channel_layout=7.1 [FL][FR][FC][LFE][BL][BR][SL][SR];"
+                    "[FL][FR][FC][BL][BR][SL][SR] amerge=inputs=7,anullsink;"
+                    "[LFE] pan=BC+LFE|BC=c0|LFE=c0,channelsplit=channel_layout=BC+LFE [BC][LFE2];"
+                    "[LFE2] firequalizer=gain='if(lt(f,150), 0, -INF)',pan=LFE|LFE=c0 [LFE2];"
+                    "[BC] firequalizer=gain='if(gt(f,150), 0, -INF)',pan=BC|BC=c0 [BC];"
+                    "[orig] pan=FL+FR+FC+BL+BR+SL+SR|FL=FL|FR=FR|FC=FC|BL=BL|BR=BR|SL=SL|SR=SR [orig2];"
+                    "[orig2][BC][LFE2] amerge=inputs=3,pan=FL+FR+FC+LFE+BL+BR+BC+SL+SR|"
                     "FL=FL|FR=FR|FC=FC|LFE={lfemultiplier}*LFE|BL=BL|BR=BR|BC=BC|SL=SL|SR=SR").format(lfemultiplier=lfemultiplier)
         else:
             pan = (
-                    "asplit=2 [orig][sub];" +
-                    "[sub] channelsplit=channel_layout=5.1 [FL][FR][FC][LFE][BL][BR];" +
-                    "[FL][FR][FC][BL][BR] amerge=inputs=5,anullsink;" +
-                    "[LFE] pan=BC+LFE|BC=c0|LFE=c0,channelsplit=channel_layout=BC+LFE [BC][LFE2];" +
-                    "[LFE2] firequalizer=gain='if(lt(f,150), 0, -INF)',pan=LFE|LFE=c0 [LFE2];" +
-                    "[BC] firequalizer=gain='if(gt(f,150), 0, -INF)',pan=BC|BC=c0 [BC];" +
-                    "[orig] pan=FL+FR+FC+SL+SR|FL=FL|FR=FR|FC=FC|SL<SL+BL|SR<SR+BR [orig2];" +
-                    "[orig2][BC][LFE2] amerge=inputs=3,pan=6.1|" +
+                    "asplit=2 [orig][sub];"
+                    "[sub] channelsplit=channel_layout=5.1 [FL][FR][FC][LFE][BL][BR];"
+                    "[FL][FR][FC][BL][BR] amerge=inputs=5,anullsink;"
+                    "[LFE] pan=BC+LFE|BC=c0|LFE=c0,channelsplit=channel_layout=BC+LFE [BC][LFE2];"
+                    "[LFE2] firequalizer=gain='if(lt(f,150), 0, -INF)',pan=LFE|LFE=c0 [LFE2];"
+                    "[BC] firequalizer=gain='if(gt(f,150), 0, -INF)',pan=BC|BC=c0 [BC];"
+                    "[orig] pan=FL+FR+FC+SL+SR|FL=FL|FR=FR|FC=FC|SL<SL+BL|SR<SR+BR [orig2];"
+                    "[orig2][BC][LFE2] amerge=inputs=3,pan=6.1|"
                     "FL=FL|FR=FR|FC=FC|LFE={lfemultiplier}*LFE|BC=BC|SL=SL|SR=SR").format(lfemultiplier=lfemultiplier)
 
     if subboost:
@@ -192,16 +196,17 @@ def filtergraph(volume=None):
     else:
         subeq = ""
 
-    maineq = "entry(100,0);entry(140,2);entry(200,-0.5);" + \
-             "entry(250,0);entry(300,0);entry(400,1.0);entry(550,2);entry(700,2);entry(1000,-0.5);" + \
-             "entry(1300,-0.5);entry(1700,1);entry(2000,0);entry(2500,-2.0);entry(3000,-4.0);" + \
-             "entry(3500,-8);entry(4500,-11.0);entry(7500,-1.0);entry(9500,-1.0);" + \
-             "entry(10000,-3);entry(12000,-4);entry(13000,-3);entry(14000,0);entry(15000,-2.0);entry(20000,0.0)"
+    maineq = (
+            "entry(100,0);entry(140,2);entry(200,-0.5);"
+            "entry(250,0);entry(300,0);entry(400,1.0);entry(550,2);entry(700,2);entry(1000,-0.5);"
+            "entry(1300,-0.5);entry(1700,1);entry(2000,0);entry(2500,-2.0);entry(3000,-4.0);"
+            "entry(3500,-8);entry(4500,-11.0);entry(7500,-1.0);entry(9500,-1.0);"
+            "entry(10000,-3);entry(12000,-4);entry(13000,-3);entry(14000,0);entry(15000,-2.0);entry(20000,0.0)")
 
     if sofalizer:
         graph = (
-                "{pan}," +
-                "aresample=96000:resampler={resampler}:precision=28," +
+                "{pan},"
+                "aresample=96000:resampler={resampler}:precision=28,"
                 "sofalizer=sofa={sofa}:gain={sofagain}:{speakers}").format(
                 # "firequalizer=gain_entry='{subeq}{maineq}'").format(
             pan=pan, sofa=sofafile,
@@ -209,10 +214,10 @@ def filtergraph(volume=None):
             maineq=maineq, resampler=resampler)
     else:
         graph = (
-                "{wavs}," +
-                "[a:0]{pan}," +
-                "aresample=96000:resampler={resampler}:precision=28[main]," +
-                "[main]{map}headphone=map={speakers}:gain={sofagain}," +
+                "{wavs},"
+                "[a:0]{pan},"
+                "aresample=96000:resampler={resampler}:precision=28[main],"
+                "[main]{map}headphone=map={speakers}:gain={sofagain},"
                 "firequalizer=gain_entry='{subeq}{maineq}'").format(
             wavs=wavs, pan=pan, map=headphone_map,
             sofagain=sofagain, speakers=speakers, subeq=subeq,
