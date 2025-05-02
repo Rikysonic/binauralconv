@@ -115,6 +115,7 @@ def isint(x):
 def filtergraph(volume=None):
     if sofalizer:
         speakers51  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BC 180 0|SL 120 0|SR 240 0"
+        speakers512 = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|SL 120 0|SR 240 0|TFL 80 45|TFR 280 45"
         speakers40  = "speakers=FL 45 0|FR 315 0|FC 0 0|BL 135 0|BR 225 0|BC 180 0"
         speakers71  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 135 0|BR 225 0|BC 180 0|SL 90 0|SR 270 0"
         speakers714 = (
@@ -125,6 +126,8 @@ def filtergraph(volume=None):
                 "WL 60 0|WR 300 0|TFL 45 45|TFR 315 45|TFC 90 45|TBC 270 45|TBL 135 45|TBR 225 45")
         if layout == "4.0":
             speakers = speakers40
+        elif layout == "5.1.2":
+            speakers = speakers512
         elif layout == "7.1":
             speakers = speakers71
         elif layout == "7.1.4":
@@ -189,6 +192,10 @@ def filtergraph(volume=None):
                     "[orig] pan=FL+FR+FC+BL+BR+SL+SR|FL=FL|FR=FR|FC=FC|BL=BL|BR=BR|SL=SL|SR=SR [orig2];"
                     "[orig2][BC][LFE2] amerge=inputs=3,pan=FL+FR+FC+LFE+BL+BR+BC+SL+SR|"
                     "FL=FL|FR=FR|FC=FC|LFE={lfemultiplier}*LFE|BL=BL|BR=BR|BC=BC|SL=SL|SR=SR").format(lfemultiplier=lfemultiplier)
+        elif layout == "5.1.2":
+            pan = (
+                    "pan=FL+FR+FC+LFE+SL+SR+TFL+TFR|"
+                    "FL=c0|FR=c1|FC=c2|LFE={lfemultiplier}*c3|SL=c4|SR=c5|TFL=c6|TFR=c7").format(lfemultiplier=lfemultiplier)
         elif layout == "7.1.4":
             pan = (
                     "pan=FL+FR+FC+LFE+SL+SR+BL+BR+TFL+TFR+TBL+TBR|"
@@ -701,6 +708,8 @@ Individual steps of the process can be disabled or tuned using these options:
             force = True
         elif argname in ("--quad", "-quad", "-4"):
             layout = "4.0"
+        elif argname in "--5.1.2":
+            layout = "5.1.2"
         elif argname in ("--7.1", "-8"):
             layout = "7.1"
         elif argname in ("--7.1.4", "-12"):
