@@ -119,7 +119,7 @@ def filtergraph(volume=None):
         speakers51  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BC 180 0|SL 120 0|SR 240 0"
         speakers512 = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|SL 120 0|SR 240 0|TFL 80 45|TFR 280 45"
         speakers40  = "speakers=FL 45 0|FR 315 0|FC 0 0|BL 135 0|BR 225 0|BC 180 0"
-        speakers71  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 135 0|BR 225 0|BC 180 0|SL 90 0|SR 270 0"
+        speakers71  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 150 0|BR 210 0|BC 180 0|SL 90 0|SR 270 0"
         speakers714 = (
             "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|SL 90 0|SR 270 0|BL 135 0|BR 225 0|"
             "TFL 45 45|TFR 315 45|TBL 135 45|TBR 225 45")
