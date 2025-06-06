@@ -116,7 +116,7 @@ def filtergraph(volume=None):
     if sofalizer:
         speakers51  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BC 180 0|SL 120 0|SR 240 0"
         speakers40  = "speakers=FL 45 0|FR 315 0|FC 0 0|BL 135 0|BR 225 0|BC 180 0"
-        speakers71  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 150 0|BR 210 0|BC 180 0|SL 90 0|SR 270 0"
+        speakers71  = "speakers=FL 30 0|FR 330 0|FC 0 0|LFE 180 -45|BL 150 0|BR 210 0|BC 180 0|SL 110 0|SR 250 0"
         if layout == "4.0":
             speakers = speakers40
         elif layout == "7.1":
